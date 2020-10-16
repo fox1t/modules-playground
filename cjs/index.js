@@ -1,6 +1,6 @@
 const Fastify = require("fastify");
 const { fastify } = require("fastify");
-const { default: fastifiDefault } = require("fastify");
+const { default: fastifyDefault } = require("fastify");
 
 const fastify1 = Fastify();
 
@@ -26,7 +26,7 @@ fastify2
     process.exit(1);
   });
 
-const fastify3 = fastifiDefault();
+const fastify3 = fastifyDefault();
 
 fastify2
   .listen(3002)

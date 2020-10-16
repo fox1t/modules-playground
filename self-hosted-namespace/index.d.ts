@@ -1,9 +1,7 @@
 export = helloWorld;
 
-declare namespace helloWorld2 {
+declare namespace helloWorld {
   type HelloWorldResponse = 'Hello World';
 }
 
-declare function helloWorld(): helloWorld2.HelloWorldResponse;
-declare type helloWorld3 = { helloWorld: true };
-
+declare function helloWorld(): helloWorld.HelloWorldResponse;

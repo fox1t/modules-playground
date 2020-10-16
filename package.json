@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "verify:cjs": "tsc -p ./cjs/tsconfig.json",
-    "verify:esm": "tsc -p ./esm/tsconfig.json",
     "run:cjs": "node ./cjs",
     "run:esm": "node ./esm/index.mjs",
     "run:ts-interop-false": "tsc -p ./typescript/es-module-interop-false/tsconfig.json && node ./typescript/es-module-interop-false/build",
     "run:ts-interop-true": "tsc -p ./typescript/es-module-interop-true/tsconfig.json && node ./typescript/es-module-interop-true/build",
-    "all": "run-p verify:* run:*"
+    "run:typed-cjs": "tsc -p ./typed-cjs/tsconfig.json && node ./cjs",
+    "all": "run-p run:*"
   },
   "repository": {
     "type": "git",

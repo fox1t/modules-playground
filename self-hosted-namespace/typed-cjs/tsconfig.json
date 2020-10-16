@@ -6,6 +6,6 @@
     "noEmit": true,
   },
   "include": [
-    "./index.js"
+    "index.js",
   ]
 }

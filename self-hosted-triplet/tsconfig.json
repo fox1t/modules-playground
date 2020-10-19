@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": false,
+    "pretty": true,
+    "lib": [
+      "esnext"
+    ],
+    "typeRoots": [
+      "../node_modules/@types",
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

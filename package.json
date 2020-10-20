@@ -2,19 +2,42 @@
   "name": "modules-playground",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "run:namespace:cjs": "node ./self-hosted-namespace/cjs",
-    "run:namespace:esm": "node ./self-hosted-namespace/esm/index.mjs",
-    "run:namespace:ts-interop-false": "tsc -p ./self-hosted-namespace/typescript/es-module-interop-false/tsconfig.json && node ./self-hosted-namespace/typescript/es-module-interop-false",
-    "run:namespace:ts-interop-true": "tsc -p ./self-hosted-namespace/typescript/es-module-interop-true/tsconfig.json && node ./self-hosted-namespace/typescript/es-module-interop-true",
-    "run:namespace:typed-cjs": "tsc -p ./self-hosted-namespace/typed-cjs/tsconfig.json && node ./self-hosted-namespace/cjs",
-    "run:triplet:cjs": "node ./self-hosted-triplet/cjs",
-    "run:triplet:esm": "node ./self-hosted-triplet/esm/index.mjs",
-    "run:triplet:ts-interop-false": "tsc -p ./self-hosted-triplet/typescript/es-module-interop-false/tsconfig.json && node ./self-hosted-triplet/typescript/es-module-interop-false",
-    "run:triplet:ts-interop-true": "tsc -p ./self-hosted-triplet/typescript/es-module-interop-true/tsconfig.json && node ./self-hosted-triplet/typescript/es-module-interop-true",
-    "run:triplet:typed-cjs": "tsc -p ./self-hosted-triplet/typed-cjs/tsconfig.json && node ./self-hosted-triplet/cjs",
-    "all": "run-p --continue-on-error --print-label --silent --aggregate-output run:**"
+    "build": "run-p build:*",
+    "build:ts": "tsc -p ./modules/node_modules/ts/tsconfig.json",
+    "build:ts-namespace": "tsc -p ./modules/node_modules/ts-namespace/tsconfig.json",
+    "build:ts-triplet": "tsc -p ./modules/node_modules/ts-triplet/tsconfig.json",
+    "run:cjs": "run-p --continue-on-error --print-label --aggregate-output run:cjs:*",
+    "run:cjs:cjs-namespace": "node ./modules/cjs/cjs-namespace.js",
+    "run:cjs:cjs-triplet": "node ./modules/cjs/cjs-triplet.js",
+    "run:cjs:ts-namespace": "node ./modules/cjs/ts-namespace.js",
+    "run:cjs:ts-triplet": "node ./modules/cjs/ts-triplet.js",
+    "run:cjs:ts": "node ./modules/cjs/ts.js",
+    "run:esm": "run-p --continue-on-error --print-label --aggregate-output run:esm:*",
+    "run:esm:cjs-namespace": "node ./modules/esm/cjs-namespace.mjs",
+    "run:esm:cjs-triplet": "node ./modules/esm/cjs-triplet.mjs",
+    "run:esm:ts-namespace": "node ./modules/esm/ts-namespace.mjs",
+    "run:esm:ts-triplet": "node ./modules/esm/ts-triplet.mjs",
+    "run:esm:ts": "node ./modules/esm/ts.mjs",
+    "run:ts-es-module-interop-false": "run-p --continue-on-error --print-label --aggregate-output run:ts-es-module-interop-false:*",
+    "run:ts-es-module-interop-false:cjs-namespace": "ts-node --project ./modules/ts-es-module-interop-false/tsconfig.json ./modules/ts-es-module-interop-false/cjs-namespace.ts",
+    "run:ts-es-module-interop-false:cjs-triplet": "ts-node --project ./modules/ts-es-module-interop-false/tsconfig.json ./modules/ts-es-module-interop-false/cjs-triplet.ts",
+    "run:ts-es-module-interop-false:ts-namespace": "ts-node --project ./modules/ts-es-module-interop-false/tsconfig.json ./modules/ts-es-module-interop-false/ts-namespace.ts",
+    "run:ts-es-module-interop-false:ts-triplet": "ts-node --project ./modules/ts-es-module-interop-false/tsconfig.json ./modules/ts-es-module-interop-false/ts-triplet.ts",
+    "run:ts-es-module-interop-false:ts": "ts-node --project ./modules/ts-es-module-interop-false/tsconfig.json ./modules/ts-es-module-interop-false/ts.ts",
+    "run:ts-es-module-interop-true": "run-p --continue-on-error --print-label --aggregate-output run:ts-es-module-interop-true:*",
+    "run:ts-es-module-interop-true:cjs-namespace": "ts-node --project ./modules/ts-es-module-interop-true/tsconfig.json ./modules/ts-es-module-interop-true/cjs-namespace.ts",
+    "run:ts-es-module-interop-true:cjs-triplet": "ts-node --project ./modules/ts-es-module-interop-true/tsconfig.json ./modules/ts-es-module-interop-true/cjs-triplet.ts",
+    "run:ts-es-module-interop-true:ts-namespace": "ts-node --project ./modules/ts-es-module-interop-true/tsconfig.json ./modules/ts-es-module-interop-true/ts-namespace.ts",
+    "run:ts-es-module-interop-true:ts-triplet": "ts-node --project ./modules/ts-es-module-interop-true/tsconfig.json ./modules/ts-es-module-interop-true/ts-triplet.ts",
+    "run:ts-es-module-interop-true:ts": "ts-node --project ./modules/ts-es-module-interop-true/tsconfig.json ./modules/ts-es-module-interop-true/ts.ts",
+    "run:typed-cjs": "run-p --continue-on-error --print-label --aggregate-output run:typed-cjs:*",
+    "run:typed-cjs:cjs-namespace": "node ./modules/typed-cjs/cjs-namespace.js",
+    "run:typed-cjs:cjs-triplet": "node ./modules/typed-cjs/cjs-triplet.js",
+    "run:typed-cjs:ts-namespace": "node ./modules/typed-cjs/ts-namespace.js",
+    "run:typed-cjs:ts-triplet": "node ./modules/typed-cjs/ts-triplet.js",
+    "run:typed-cjs:ts": "node ./modules/typed-cjs/ts.js",
+    "all": "run-p --continue-on-error --print-label --aggregate-output run:cjs run:esm run:ts-es-module-interop-false run:ts-es-module-interop-true run:typed-cjs"
   },
   "repository": {
     "type": "git",
@@ -28,10 +51,9 @@
   "homepage": "https://github.com/fox1t/modules-playground#readme",
   "devDependencies": {
     "@types/node": "^14.0.27",
+    "fastify-tsconfig": "^1.0.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^3.9.7"
-  },
-  "dependencies": {
-    "fastify": "3.2.0"
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
   }
 }

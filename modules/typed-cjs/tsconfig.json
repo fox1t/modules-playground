@@ -1,0 +1,11 @@
+{
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true
+  },
+  "include": [
+    "*.js",
+  ]
+}

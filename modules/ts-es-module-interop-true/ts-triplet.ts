@@ -1,54 +1,72 @@
 /*
- *  Namespace export
+ * Namespace
  */
 import helloWorld from 'ts-triplet'
-import * as HelloWorldStar from 'ts-triplet'
-import HelloWorldNamespace = require('ts-triplet')
-
 if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldNamespace.default() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
-
+// Property 'default' does not exist on type '() => string'.ts(2339)
+// if (helloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+// Property 'helloWorld' does not exist on type '() => string'.ts(2339)
+// if (helloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- *  end
+ * Namespace end
  */
 
 /*
- *  Named default export
+ * ImportStar
+ */
+import * as HelloWorldStar from 'ts-triplet'
+// This expression is not callable.
+//   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+// if (HelloWorldStar() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+/*
+ * ImportStar end
+ */
+
+/*
+ * ImportRequire
+ */
+import HelloWorldNamespace = require('ts-triplet')
+// This expression is not callable.
+//   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+// if (HelloWorldNamespace() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldNamespace.default() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+/*
+ * ImportRequire end
+ */
+
+/*
+ * Named default
  */
 import { default as DefaultHelloWorld } from 'ts-triplet'
 if (DefaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
+// Property 'default' does not exist on type '() => string'.ts(2339)
+// if (DefaultHelloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+// Property 'helloWorld' does not exist on type '() => string'.ts(2339)
+// if (DefaultHelloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- *  end
+ * Named default end
  */
 
 /*
- *  Named exports
+ * Named
  */
 import { helloWorld as namedHelloWorld } from 'ts-triplet'
 if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- *  end
+ * Named end
  */
 
 /*
  *  Dynamic import
  */
-// even if helloWorld is a function TS says it is not callable. Bug??
-// typescript dynamic import is just a Promise that calls `require()` after the compilation
-// <ref *1> [Function: helloWorld] {
-//   default: [Circular *1],
-//   helloWorld: [Circular *1]
-// }
-// `import('ts-triplet')` behavior is not the same as `import helloWorld from 'ts-triplet'` that searches for the default prop
-
 import('ts-triplet')
   .then(helloWorld => {
     const { helloWorld: namedHelloWorld, default: defaultHelloWorld } = helloWorld
     // not callable! Bug?
-    //if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
+    // if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
     if (defaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
     if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
   })
@@ -57,5 +75,5 @@ import('ts-triplet')
     process.exit(1)
   })
 /*
- *  end
+ * Dynamic import end
  */

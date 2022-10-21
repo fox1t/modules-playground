@@ -1,39 +1,64 @@
 /*
- *  Namespace export
+ * Namespace
  */
-// This module is declared with using 'export =', and can only be used as a default import when using the 'esModuleInterop: true'
-// import helloWorld from 'cjs-namespace'
-import * as helloWorldStar from 'ts-namespace'
-import helloWorld = require('cjs-namespace')
+import helloWorld from 'ts-namespace'
 if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+/*
+ * Namespace end
+ */
+
+/*
+ * ImportStar
+ */
+import * as helloWorldStar from 'ts-namespace'
 if (helloWorldStar() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
 if (helloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- *  end
+ * ImportStar end
  */
 
 /*
- *  Named exports
+ * ImportRequire
  */
-import { helloWorld as namedHelloWorld } from 'cjs-namespace'
+import HelloWorldNamespace = require('ts-namespace')
+if (HelloWorldNamespace() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldNamespace.default() !== 'Hello World') throw new Error('Oh no!')
+if (HelloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+/*
+ * ImportRequire end
+ */
+
+/*
+ * Named default
+ */
+import { default as DefaultHelloWorld } from 'ts-namespace'
+if (DefaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
+if (DefaultHelloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+if (DefaultHelloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+/*
+ * Named default end
+ */
+
+/*
+ * Named
+ */
+import { helloWorld as namedHelloWorld } from 'ts-namespace'
 if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- *  end
+ * Named end
  */
 
 /*
- *  Dynamic import
+ * Dynamic import
  */
-// in TS dynamic namespace import is callable (in ESM IT IS NOT CALLABLE)
-// because it has the same shape as `import * as helloWorldStar from 'cjs-namespace'` and `import helloWorld = require('cjs-namespace')`
-//[Function: helloWorld] {
-//   helloWorld: [Circular *1]
-//}
-
 import('ts-namespace')
   .then(helloWorld => {
-    const { helloWorld: namedHelloWorld } = helloWorld
+    const { helloWorld: namedHelloWorld, default: defaultHelloWorld } = helloWorld
     if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
+    if (defaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
     if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
   })
   .catch(err => {
@@ -41,5 +66,5 @@ import('ts-namespace')
     process.exit(1)
   })
 /*
- *  end
+ * Dynamic import end
  */

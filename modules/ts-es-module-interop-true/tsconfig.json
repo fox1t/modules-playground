@@ -1,12 +1,8 @@
 {
   "extends": "fastify-tsconfig",
   "compilerOptions": {
-    "outDir": "build",
-    "target": "es2018",
+    "declaration": false,
     "esModuleInterop": true,
-    "lib": [
-      "es2018"
-    ]
   },
   "include": [
     "*.ts"

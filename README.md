@@ -1,26 +1,10 @@
 # Intro
 
-This repo is part of a foregoing discussion about the best TS exported types and JS export objects for the Fastify ecosystem. The document that originates it can be found [here](https://gist.github.com/fox1t/314e5fe9784ff7bb695b4603b97d978d).
+This repo is part of a previous discussion about the best TS exported types and JS export objects for the Fastify ecosystem. The document that originates it can be found [here](https://gist.github.com/fox1t/314e5fe9784ff7bb695b4603b97d978d).
 
-The repo demonstrates how fastify version 3.2.0 can be imported in 3 different contexts (4 if we consider TS as two distinct, because of esModuleInterop) without any runtime issues or TS compile problems.
-
-This repository also implicitly demonstrates how current fastify TS types and JS exported-object are probably the best options for all fastify packages.
-
-There are 4 main folders:
-
-- CJS: this folder contains `module.exports/require` workflow
-- ESM: this folder contains `export/import` in JS world (node v14.7.0 is used in order to have ESM native support)
-- TS: contains two different configurations for [esModuleInterop](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#support-for-import-d-from-cjs-from-commonjs-modules-with---esmoduleinterop)
-  - es-module-interop-false
-  - es-module-interop-true
-
+The repo demonstrates how different dependency packages (`modules/node_modules`) can be imported in different contexts (other folders in the `modules` folder) without any runtime issues or TS compile problems.
 ## Note
-
-The project deliberately "just" imports and calls fastify (instead of using test suites/tsd or other helpers) function in order to ensure that it is properly working in the real scenarios.
-
-## Note 2
-
-The projects includes also TS compiled code, in order to be useful even without being cloned.
+The project also includes TS-compiled code to be useful even without being cloned.
 
 # Usage
 
@@ -37,33 +21,15 @@ $ npm i
 $ npm run all
 ```
 
-The last command will run all of the scripts that point to different contexts: a total of 17 fastify servers will be started and the output should be something similar to this.
+The last command will run all of the scripts that point to different contexts. If no compile or runtime errors are thrown, everything works as expected.
 
-```
-[ESM] namespace import is running.
-[ESM] `import("fastify");` dynamic namespace import is running (using `.default` prop).
-[CJS] named require is running.
-[CJS] default property require is running.
-[CJS] module.exports is running.
-[TS - esModuleInterop: false] `import { fastify } from "fastify";` is running. (fastify named import)
-[TS - esModuleInterop: true] `import { fastify } from "fastify";` is running. (fastify named import)
-[TS - esModuleInterop: true] `import Fastify from 'fastify';` import is running. (namespace `.default` prop)
-[TS - esModuleInterop: false] `import Fastify from 'fastify';` import is running. (namespace `.default` prop)
-[TS - esModuleInterop: true] `import * as FastifyNamespace from "fastify";` star import namespace named import is running (using `.fastify` prop).
-[TS - esModuleInterop: false] `import * as FastifyNamespace from "fastify";` star import namespace named import is running (using `.fastify` prop).
-[TS - esModuleInterop: false] `import * as FastifyNamespace from "fastify";` star import namespace is running (using `.default` prop).
-[TS - esModuleInterop: true] `import * as FastifyNamespace from "fastify";` star import namespace is running (using `.default` prop).
-[TS - esModuleInterop: false] `import("fastify");` dynamic namespace import is running (using `.fastify` prop).
-[TS - esModuleInterop: true] `import("fastify");` dynamic namespace import is running (using `.fastify` prop).
-[TS - esModuleInterop: true] `import("fastify");` dynamic namespace import is running (using `.default` prop).
-[TS - esModuleInterop: false] `import("fastify");` dynamic namespace import is running (using `.default` prop).
-```
+Looking at the code, it is possible to find commented lines with errors above them. Those lines generate an error (compile or runtime) in their used context.
 
-At the beginning of each line, between `[]` there is the context that is running the server.
+Opening specific runtime context, it is easy to check which packages are the most compatible with that particular context.
 
 ### Conclusions
 
-We can see that not every context is able to run all of the exports we are providing. However, it is important to note that every context has everything that is needed in order to be used without being weird to its habitual users.
+We can see that not every context can run all of the exports. The most compatible package type is the so-called `cjs-namespace` that combines the infamous triplet with a typescript namespace (check out `modules/node_modules/cjs-namespace`).
 
 Exporting this JS code
 
@@ -76,10 +42,14 @@ module.exports = fastify;
 and this types
 
 ```ts
-export { fastify };
-export default fastify;
+declare namespace fastify {
+  export { fastify };
+  export { fastify as default };
+}
 
-// and all other named exported types
+declare function fastify(): string
+
+export = fastify;
 ```
 
-makes Fastify immune to esModuleInterop configuration, and makes all of our users happier!
+This specific export makes Fastify immune to esModuleInterop configuration and allows imports in every other context. The TS newly added `NodeNext` too!

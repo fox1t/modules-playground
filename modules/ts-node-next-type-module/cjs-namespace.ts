@@ -16,7 +16,6 @@ import * as helloWorldStar from 'cjs-namespace'
 // This expression is not callable.
 //   Type 'typeof helloWorld' has no call signatures.ts(2349)
 // if (helloWorldStar() !== 'Hello World') throw new Error('Oh no!')
-
 if (helloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
 if (helloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
@@ -26,10 +25,10 @@ if (helloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  * ImportRequire
  */
-import HelloWorldNamespace = require('cjs-namespace')
-if (HelloWorldNamespace() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldNamespace.default() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+import helloWorldNamespace = require('cjs-namespace')
+if (helloWorldNamespace() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorldNamespace.default() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  * ImportRequire end
  */
@@ -46,30 +45,24 @@ if (DefaultHelloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
  */
 
 /*
- * Named
+ * Named exports
  */
 import { helloWorld as namedHelloWorld } from 'cjs-namespace'
 if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
- * Named end
+ *  end
  */
 
 /*
  * Dynamic import
  */
-// imported helloWorld is an object and therefore is not callable even if TS thinks. This is a bug in TS.
-// {
-//   helloWorld: [Getter],
-//   default: <ref *1> [Function: helloWorld] {
-//     helloWorld: [Circular *1],
-//     default: [Circular *1]
-//   }
-// }
 import('cjs-namespace')
   .then(helloWorld => {
     const { helloWorld: namedHelloWorld, default: defaultHelloWorld } = helloWorld
-    // This expression is not callable in Node.js even if TS thinks it is a function. helloWorld: () => string
+    // This expression is not callable.
+    //   Type '{ default: typeof helloWorld; helloWorld: typeof helloWorld; }' has no call signatures.ts(2349)
     // if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
+
     if (defaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
     if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
   })

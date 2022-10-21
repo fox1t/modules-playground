@@ -2,12 +2,11 @@
  * Namespace
  */
 import helloWorld from 'ts-triplet'
-if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
-// Property 'default' does not exist on type '() => string'.ts(2339)
-// if (helloWorld.default() !== 'Hello World') throw new Error('Oh no!')
-
-// Property 'helloWorld' does not exist on type '() => string'.ts(2339)
-// if (helloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+// This expression is not callable.
+//   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+// if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+if (helloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  * Namespace end
  */
@@ -19,7 +18,10 @@ import * as HelloWorldStar from 'ts-triplet'
 // This expression is not callable.
 //   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
 // if (HelloWorldStar() !== 'Hello World') throw new Error('Oh no!')
-if (HelloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
+
+// This expression is not callable.
+//   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+// if (HelloWorldStar.default() !== 'Hello World') throw new Error('Oh no!')
 if (HelloWorldStar.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  * ImportStar end
@@ -42,18 +44,17 @@ if (HelloWorldNamespace.helloWorld() !== 'Hello World') throw new Error('Oh no!'
  * Named default
  */
 import { default as DefaultHelloWorld } from 'ts-triplet'
-if (DefaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
-// Property 'default' does not exist on type '() => string'.ts(2339)
-// if (DefaultHelloWorld.default() !== 'Hello World') throw new Error('Oh no!')
-
-// Property 'helloWorld' does not exist on type '() => string'.ts(2339)
-// if (DefaultHelloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
+// This expression is not callable.
+//   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+// if (DefaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
+if (DefaultHelloWorld.default() !== 'Hello World') throw new Error('Oh no!')
+if (DefaultHelloWorld.helloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  * Named default end
  */
 
 /*
- * Named
+ *  Named exports
  */
 import { helloWorld as namedHelloWorld } from 'ts-triplet'
 if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
@@ -64,13 +65,19 @@ if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
 /*
  *  Dynamic import
  */
+// `import('ts-triplet')` behavior is not the same as `import helloWorld from 'ts-triplet'` that searches for the default prop
+
 import('ts-triplet')
   .then(helloWorld => {
     const { helloWorld: namedHelloWorld, default: defaultHelloWorld } = helloWorld
     // This expression is not callable.
-    //   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+    //   Type '{ default: typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index"); helloWorld: () => string; }' has no call signatures.ts(2349)
     // if (helloWorld() !== 'Hello World') throw new Error('Oh no!')
-    if (defaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
+
+    // This expression is not callable.
+    //   Type 'typeof import("/Users/maksim/Projects/experiments/modules-playground/modules/node_modules/ts-triplet/build/index")' has no call signatures.ts(2349)
+    // if (defaultHelloWorld() !== 'Hello World') throw new Error('Oh no!')
+
     if (namedHelloWorld() !== 'Hello World') throw new Error('Oh no!')
   })
   .catch(err => {
